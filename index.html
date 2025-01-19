@@ -79,12 +79,12 @@
   </div>
 
   <script>
-    const backendURL = 'https://fast2otp.vercel.app'; // Replace with your actual Vercel backend URL
+    const backendURL = 'https://2factorsam.vercel.app/'; // Replace with your actual Vercel URL
 
     document.getElementById('sendOtp').addEventListener('click', () => {
       const mobile = document.getElementById('mobile').value;
       if (mobile) {
-        fetch(`${backendURL}/send-otp`, {
+        fetch(`${backendURL}send-otp`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ mobile }),
@@ -98,6 +98,10 @@
             } else {
               document.getElementById('message').textContent = data.message;
             }
+          })
+          .catch(err => {
+            document.getElementById('message').textContent = 'Error sending OTP. Try again.';
+            console.error(err);
           });
       } else {
         document.getElementById('message').textContent = 'Please enter a valid mobile number.';
@@ -107,7 +111,8 @@
     document.getElementById('verifyOtp').addEventListener('click', () => {
       const mobile = document.getElementById('mobile').value;
       const otp = document.getElementById('otp').value;
-      fetch(`${backendURL}/verify-otp`, {
+
+      fetch(`${backendURL}verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile, otp }),
@@ -117,8 +122,12 @@
           if (data.success) {
             document.getElementById('message').textContent = 'Mobile number verified successfully!';
           } else {
-            document.getElementById('message').textContent = 'Invalid OTP. Please try again.';
+            document.getElementById('message').textContent = data.message || 'Invalid OTP. Try again.';
           }
+        })
+        .catch(err => {
+          document.getElementById('message').textContent = 'Error verifying OTP. Try again.';
+          console.error(err);
         });
     });
   </script>
