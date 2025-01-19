@@ -75,3 +75,12 @@ app.post('/verify-otp', async (req, res) => {
 
 // Export the app for Vercel
 module.exports = app;
+
+
+const cors = require('cors');
+app.use(cors({
+    origin: '*', // Allow all origins
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
+}));
+
